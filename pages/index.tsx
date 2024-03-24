@@ -1,6 +1,6 @@
 import Head from "next/head";
-import clientPromise from "../lib/mongodb";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import type {GetServerSideProps, InferGetServerSidePropsType} from "next";
+import {MongoClientConnector} from "../lib/mongodb";
 
 type ConnectionStatus = {
   isConnected: boolean;
@@ -10,7 +10,7 @@ export const getServerSideProps: GetServerSideProps<
   ConnectionStatus
 > = async () => {
   try {
-    await clientPromise;
+    await MongoClientConnector.Instance.clientPromise;
     // `await clientPromise` will use the default database passed in the MONGODB_URI
     // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
     //

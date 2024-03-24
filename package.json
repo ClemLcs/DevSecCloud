@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "joi": "^17.12.2",
     "mongodb": "^4.8.1",
     "next": "latest",
     "next-swagger-doc": "^0.4.0",

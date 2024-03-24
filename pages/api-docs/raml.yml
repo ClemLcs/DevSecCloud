@@ -1,0 +1,545 @@
+#%RAML 1.0
+---
+title: Développement et Service Cloud API
+baseUri:
+mediaType: application/json
+version: v1
+protocols: [HTTPS]
+
+/api/movies:
+  /:
+    get:
+      description: Retourne les films en BDD
+      responses:
+        200:
+          description: Success
+          body:
+            application/json:
+              type: array
+        500:
+          description: Une erreur est survenue lors de la récupération des films
+          body:
+            application/json:
+              type: string
+              example: "Une erreur est survenue lors de la récupération des films"
+
+  /{idMovie}:
+    get:
+      description: Retourne un film
+      responses:
+        200:
+          description: Success
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                    "_id": "573a1390f29313caabcd42e8",
+                    "plot": "A group of bandits stage a brazen train hold-up, only to find a determined posse hot on their heels.",
+                    "genres": [
+                        "Short",
+                        "Western"
+                    ],
+                    "runtime": 11,
+                    "cast": [
+                        "A.C. Abadie",
+                        "Gilbert M. 'Broncho Billy' Anderson",
+                        "George Barnes",
+                        "Justus D. Barnes"
+                    ],
+                    "poster": "https://m.media-amazon.com/images/M/MV5BMTU3NjE5NzYtYTYyNS00MDVmLWIwYjgtMmYwYWIxZDYyNzU2XkEyXkFqcGdeQXVyNzQzNzQxNzI@._V1_SY1000_SX677_AL_.jpg",
+                    "title": "The Great Train Robbery",
+                    "fullplot": "Among the earliest existing films in American cinema - notable as the first film that presented a narrative story to tell - it depicts a group of cowboy outlaws who hold up a train and rob the passengers. They are then pursued by a Sheriff's posse. Several scenes have color included - all hand tinted.",
+                    "languages": [
+                        "English"
+                    ],
+                    "released": "1903-12-01T00:00:00.000Z",
+                    "directors": [
+                        "Edwin S. Porter"
+                    ],
+                    "rated": "TV-G",
+                    "awards": {
+                        "wins": 1,
+                        "nominations": 0,
+                        "text": "1 win."
+                    },
+                    "lastupdated": "2015-08-13 00:27:59.177000000",
+                    "year": 1903,
+                    "imdb": {
+                        "rating": 7.4,
+                        "votes": 9847,
+                        "id": 439
+                    },
+                    "countries": [
+                        "USA"
+                    ],
+                    "type": "movie",
+                    "tomatoes": {
+                        "viewer": {
+                            "rating": 3.7,
+                            "numReviews": 2559,
+                            "meter": 75
+                        },
+                        "fresh": 6,
+                        "critic": {
+                            "rating": 7.6,
+                            "numReviews": 6,
+                            "meter": 100
+                        },
+                        "rotten": 0,
+                        "lastUpdated": "2015-08-08T19:16:10.000Z"
+                    },
+                    "num_mflix_comments": 3
+                }
+        404:
+          description: Film non trouvé
+          body:
+            application/json:
+              type: string
+              example: Film non trouvé
+        500:
+          description: Une erreur est survenue
+          body:
+            application/json:
+              type: string
+              example: Une erreur est survenue
+    post:
+      description: Création d'un film
+      body:
+        application/json:
+          type: object
+          example: |
+            {
+                "plot": "Test",
+                "genres": ["TEst"],
+                "runtime": "Test",
+                "poster": "Test",
+                "title": "My title",
+                "lastupdated": "2024-03-24T21:45:45.920Z"
+            }
+      responses:
+        200:
+          description: Success
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                    "acknowledged": true,
+                    "insertedId": "66008551b6dba8cfa1ba394f"
+                }
+        400:
+          description: Bad Request
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                    "_original": {
+                        "plot": "Test",
+                        "genres": [
+                            "TEst"
+                        ],
+                        "runtime": "Test",
+                        "poster": "Test",
+                        "title": "My title"
+                    },
+                    "details": [
+                        {
+                            "message": "\"lastupdated\" is required",
+                            "path": [
+                                "lastupdated"
+                            ],
+                            "type": "any.required",
+                            "context": {
+                                "label": "lastupdated",
+                                "key": "lastupdated"
+                            }
+                        }
+                    ]
+                }
+        500:
+          description: Une erreur est survenue lors de la création du film
+          body:
+            application/json:
+              type: string
+              example: Une erreur est survenue lors de la création du film
+    put:
+      description: Modification d'un film
+      body:
+        application/json:
+          type: object
+          example: |
+            {
+                "_id": "XXXXXX",
+                "plot": "Test",
+                "genres": ["TEst"],
+                "runtime": "Test",
+                "poster": "Test",
+                "title": "My title 2",
+                "lastupdated": "2024-03-24T21:45:45.920Z",
+                "num_mflix_comments": 0
+            }
+      responses:
+        200:
+          description: Success
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                  "lastErrorObject": {
+                    "n": 1,
+                    "updatedExisting": true
+                  },
+                  "value": {
+                    "_id": "66008c60b54215b69f20f875",
+                    "plot": "Test",
+                    "genres": [
+                      "TEst"
+                    ],
+                    "runtime": "Test",
+                    "poster": "Test",
+                    "title": "My title",
+                    "lastupdated": 1711311968951,
+                    "num_mflix_comments": 0
+                  },
+                  "ok": 1,
+                  "$clusterTime": {
+                    "clusterTime": {
+                      "$timestamp": "7350030189943848974"
+                    },
+                    "signature": {
+                      "hash": "2l1aBildKSuLmZ4RX2vUtaovQvU=",
+                      "keyId": {
+                        "low": 2,
+                        "high": 1698416132,
+                        "unsigned": false
+                      }
+                    }
+                  },
+                  "operationTime": {
+                    "$timestamp": "7350030189943848974"
+                  }
+              }
+        400:
+          description: Bad Request
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                    "_original": {
+                        "plot": "Test",
+                        "genres": [
+                            "TEst"
+                        ],
+                        "runtime": "Test",
+                        "poster": "Test",
+                        "title": "My title"
+                    },
+                    "details": [
+                        {
+                            "message": "\"lastupdated\" is required",
+                            "path": [
+                                "lastupdated"
+                            ],
+                            "type": "any.required",
+                            "context": {
+                                "label": "lastupdated",
+                                "key": "lastupdated"
+                            }
+                        }
+                    ]
+                }
+        404:
+          description: Film non trouvé
+          body:
+            application/json:
+              type: string
+              example: Film non trouvé
+        500:
+          description: Une erreur est survenue lors de la MAJ du film
+          body:
+            application/json:
+              type: string
+              example: Une erreur est survenue lors de la MAJ du film
+    delete:
+      description: Suppression d'un film
+      responses:
+        200:
+          description: Success
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                    "acknowledged": true,
+                    "deletedCount": 1
+                }
+        404:
+          description: Film non trouvé
+          body:
+            application/json:
+              type: string
+              example: Film non trouvé
+        500:
+          description: Une erreur est survenue lors de la suppression du film
+          body:
+            application/json:
+              type: string
+              example: Une erreur est survenue lors de la suppression du film
+    /comments:
+      get:
+        description: Retourne les commentaires d'un film
+        responses:
+          200:
+            description: Success
+            body:
+              application/json:
+                type: array
+                example: |
+                  [
+                      {
+                          "_id": "66006e605e3ea8d6de368a45",
+                          "name": "Test",
+                          "email": "test@test.new",
+                          "movie_id": "573a1390f29313caabcd42e8",
+                          "text": "Test Text",
+                          "date": "2024-03-24T19:45:45.920Z"
+                      },
+                      {
+                          "_id": "6600709184e254f6a25447f7",
+                          "name": "Test",
+                          "email": "test@test.com",
+                          "movie_id": "573a1390f29313caabcd42e8",
+                          "text": "Test Text",
+                          "date": "2024-03-24T18:45:45.920Z"
+                      },
+                      {
+                          "_id": "660081d05b9fb30b5eb53222",
+                          "name": "Test",
+                          "email": "test@test.com",
+                          "movie_id": "573a1390f29313caabcd42e8",
+                          "text": "Test Text",
+                          "date": "2024-03-24T21:45:45.920Z"
+                      }
+                  ]
+          404:
+            description: Film non trouvé
+            body:
+              application/json:
+                type: string
+                example: Film non trouvé
+          500:
+            description: Erreur
+            body:
+              application/json:
+                type: string
+                example: Erreur
+      /{idComment}:
+        get:
+          description: Retourne un commentaire
+          responses:
+            200:
+              description: Success
+              body:
+                application/json:
+                  type: array
+                  example: |
+                    [
+                        {
+                            "_id": "5a9427648b0beebeb69579e7",
+                            "name": "Mercedes Tyler",
+                            "email": "mercedes_tyler@fakegmail.com",
+                            "movie_id": "573a1390f29313caabcd4323",
+                            "text": "Eius veritatis vero facilis quaerat fuga temporibus. Praesentium expedita sequi repellat id. Corporis minima enim ex. Provident fugit nisi dignissimos nulla nam ipsum aliquam.",
+                            "date": "2002-08-18T04:56:07.000Z"
+                        }
+                    ]
+            404:
+              description: Commentaire non trouvé
+              body:
+                application/json:
+                  type: string
+                  example: Commentaire non trouvé
+            500:
+              description: Une erreur est survenue
+              body:
+                application/json:
+                  type: string
+                  example: Une erreur est survenue
+        post:
+          description: Création d'un commentaire
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                    "name": "Test",
+                    "email": "test@test.com",
+                    "movie_id": "573a1390f29313caabcd42e8",
+                    "text": "Test Text",
+                    "date": "2024-03-24T21:45:45.920Z"
+                }
+          responses:
+            200:
+              description: Success
+              body:
+                application/json:
+                  type: object
+                  example: |
+                    {
+                        "acknowledged": true,
+                        "insertedId": "66008fe4b54215b69f20f876"
+                    }
+            400:
+              description: Bad Request
+              body:
+                application/json:
+                  type: object
+                  example: |
+                    {
+                        "_original": {
+                            "email": "test@test.com",
+                            "movie_id": "573a1390f29313caabcd42e8",
+                            "text": "Test Text",
+                            "date": "2024-03-24T21:45:45.920Z"
+                        },
+                        "details": [
+                            {
+                                "message": "\"name\" is required",
+                                "path": [
+                                    "name"
+                                ],
+                                "type": "any.required",
+                                "context": {
+                                    "label": "name",
+                                    "key": "name"
+                                }
+                            }
+                        ]
+                    }
+            500:
+              description: Une erreur est survenue lors de la création du commentaire
+              body:
+                application/json:
+                  type: string
+                  example: Une erreur est survenue lors de la création du commentaire
+        put:
+          description: Modification d'un commentaire
+          body:
+            application/json:
+              type: object
+              example: |
+                {
+                    "_id": "XXXXXX",
+                    "name": "Test 2",
+                    "email": "test@test.new",
+                    "movie_id": "573a1390f29313caabcd42e8",
+                    "text": "Test Text",
+                    "date": "2024-03-24T19:45:45.920Z"
+                }
+          responses:
+            200:
+              description: Success
+              body:
+                application/json:
+                  type: object
+                  example: |
+                    {
+                        "lastErrorObject": {
+                            "n": 1,
+                            "updatedExisting": true
+                        },
+                        "value": {
+                            "_id": "66006e605e3ea8d6de368a45",
+                            "name": "Test",
+                            "email": "test@test.new",
+                            "movie_id": "573a1390f29313caabcd42e8",
+                            "text": "Test Text",
+                            "date": "2024-03-24T19:45:45.920Z"
+                        },
+                        "ok": 1,
+                        "$clusterTime": {
+                            "clusterTime": {
+                                "$timestamp": "7350033445529059338"
+                            },
+                            "signature": {
+                                "hash": "cWRzNGKFSnDa9qBFa6/R1KA1cC8=",
+                                "keyId": {
+                                    "low": 2,
+                                    "high": 1698416132,
+                                    "unsigned": false
+                                }
+                            }
+                        },
+                        "operationTime": {
+                            "$timestamp": "7350033445529059338"
+                        }
+                    }
+            400:
+              description: Bad Request
+              body:
+                application/json:
+                  type: object
+                  example: |
+                    {
+                        "_original": {
+                            "_id": "66006e605e3ea8d6de368a45",
+                            "name": "Test",
+                            "email": "test@test.new",
+                            "movie_id": "573a1390f29313caabcd42e8",
+                            "text": "Test Text"
+                        },
+                        "details": [
+                            {
+                                "message": "\"date\" is required",
+                                "path": [
+                                    "date"
+                                ],
+                                "type": "any.required",
+                                "context": {
+                                    "label": "date",
+                                    "key": "date"
+                                }
+                            }
+                        ]
+                    }
+            404:
+              description: Commentaire non trouvé
+              body:
+                application/json:
+                  type: string
+                  example: Commentaire non trouvé
+            500:
+              description: Une erreur est survenue lors de la MAJ du commentaire
+              body:
+                application/json:
+                  type: string
+                  example: Une erreur est survenue lors de la MAJ du commentaire
+        delete:
+          description: Suppression d'un commentaire
+          responses:
+            200:
+              description: Success
+              body:
+                application/json:
+                  type: object
+                  example: |
+                    {
+                        "acknowledged": true,
+                        "deletedCount": 1
+                    }
+            404:
+              description: Commentaire non trouvé
+              body:
+                application/json:
+                  type: string
+                  example: Commentaire non trouvé
+            500:
+              description: Une erreur est survenue lors de la suppression du commentaire
+              body:
+                application/json:
+                  type: string
+                  example: Une erreur est survenue lors de la suppression du commentaire
